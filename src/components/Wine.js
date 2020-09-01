@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { LikeButton, CommentButton, CommentList } from '.';
+import {fetchWine} from '../services/Wines';
+import { Loader } from './Loader';
 
 export class Wine extends Component {
   render() {
@@ -14,7 +16,7 @@ export class Wine extends Component {
             <img
               className="responsive-img wine-detail-image"
               alt="Wine bottle pic"
-              src={`${this.props.host}/api/wines/${this.props.wine.id}/image`}
+              src={`https://wines-api.herokuapp.com/api/wines/${this.props.wine.id}/image`}
             />
           </div>
           <div className="card-stacked">
@@ -42,6 +44,35 @@ export class Wine extends Component {
           </div>
         </div>
       </div>
+    );
+  }
+}
+
+export class WinePage extends Component {
+  
+  state = {
+    loading: false,
+    wine: null
+  }
+
+  componentDidMount() {
+    this.setState({ loading: true }, () => {
+      fetchWine(this.props.match.params.wineId).then(wine => {
+        this.setState({
+          loading: false,
+          wine,
+        });
+      });
+    });
+  }
+
+  render() {
+    if (this.state.loading) {
+      return <div className="center-align"><Loader /></div>
+    }
+    return (
+      <Wine
+        wine={this.state.wine} />
     );
   }
 }

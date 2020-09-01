@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Regions, WineList, Wine, CommentModal } from '.';
 import * as WinesService from '../services/Wines';
-
-const host = 'https://wines-api.herokuapp.com';
 
 export class WineApp extends Component {
   state = {
@@ -67,29 +64,7 @@ export class WineApp extends Component {
           </a>
         </div>
         <div className="row">
-          <Regions
-            onSelectRegion={this.onSelectRegion}
-            regions={this.state.regions}
-            region={this.state.selectedRegion}
-          />
-
-          <WineList
-            onSelectWine={this.onSelectWine}
-            wines={this.state.wines}
-            wine={this.state.selectedWine}
-          />
-
-          <Wine
-            host={host}
-            wine={this.state.selectedWine}
-            openCommentModal={this.openCommentModal}
-          />
-
-          <CommentModal
-            wine={this.state.selectedWine}
-            isOpen={this.state.commentModalOpen}
-            closeCommentModal={this.closeCommentModal}
-          />
+          {this.props.children}
         </div>
       </div>
     );

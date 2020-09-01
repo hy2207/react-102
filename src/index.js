@@ -1,13 +1,23 @@
-import 'es6-shim'; // yeah, polyfill all the things !!!
-import 'whatwg-fetch'; // yeah, polyfill all the things !!!
-import Symbol from 'es-symbol';
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { WineApp } from './components';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { WineApp, RegionsPage, WineListPage, WinePage, NotFound } from './components';
 import './index.css';
 
-if (!window.Symbol) {
-  window.Symbol = Symbol; // yeah, polyfill all the things !!!
+class RoutedApp extends Component {
+  render() {
+    return (
+      <Router>
+        <WineApp />
+        <Switch>
+          <Route exact path="/" component={RegionsPage} />
+          <Route exact path="/regions/:regionId" component={WineListPage} />
+          <Route path="/regions/:regionId/wines/:wineId" component={WinePage} />
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </Router>
+    );
+  }
 }
 
-ReactDOM.render(<WineApp />, document.getElementById('root'));
+ReactDOM.render(<RoutedApp />, document.getElementById('root'));
